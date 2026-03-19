@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>4-Week Pelvic Floor Protocol</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #15151f;
+            --surface-2: #1e1e2e;
+            --accent: #ff6b6b;
+            --accent-2: #4ecdc4;
+            --text: #f0f0f5;
+            --text-muted: #8b8b9e;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0 20px;
+            border-bottom: 1px solid var(--surface-2);
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .progress-overview {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--surface-2);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .week-indicator {
+            background: var(--accent);
+            color: var(--bg);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--surface-2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            text-align: center;
+        }
+
+        .stat {
+            background: var(--surface-2);
+            padding: 12px 8px;
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent-2);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .section {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--surface-2);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--surface-2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .exercise-card {
+            background: var(--surface-2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .exercise-card.kegel {
+            border-left-color: var(--accent-2);
+        }
+
+        .exercise-card.breath {
+            border-left-color: var(--warning);
+        }
+
+        .exercise-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .frequency-badge {
+            font-size: 11px;
+            background: var(--surface);
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .exercise-steps {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .exercise-steps li {
+            margin-bottom: 8px;
+            list-style: none;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .exercise-steps li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .important-note {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--accent);
+        }
+
+        .week-section {
+            display: none;
+        }
+
+        .week-section.active {
+            display: block;
+        }
+
+        .week-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .week-tab {
+            flex-shrink: 0;
+            padding: 12px 20px;
+            background: var(--surface);
+            border: 1px solid var(--surface-2);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .week-tab.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+
+        .checklist {
+            margin-top: 16px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: var(--surface-2);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .check-item:active {
+            transform: scale(0.98);
+        }
+
+        .check-item.completed {
+            opacity: 0.6;
+        }
+
+        .check-item.completed .check-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--text-muted);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .check-item.completed .checkbox {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .technique-card {
+            background: linear-gradient(135deg, var(--surface-2), var(--surface));
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--surface-2);
+        }
+
+        .technique-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-2);
+            margin-bottom: 8px;
+        }
+
+        .technique-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--surface-2);
+            border: 1px solid var(--surface-2);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .reset-btn:active {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Harder Protocol</h1>
+            <p class="subtitle">4-Week Pelvic Floor & Stamina Training</p>
+        </header>
+
+        <div class="progress-overview">
+            <div class="progress-header">
+                <span class="progress-title">Your Progress</span>
+                <span class="week-indicator" id="currentWeekDisplay">Week 1</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+            <div class="progress-stats">
+                <div class="stat">
+                    <div class="stat-value" id="daysCompleted">0</div>
+                    <div class="stat-label">Days Done</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="exercisesDone">0</div>
+                    <div class="stat-label">Exercises</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="sessionsLogged">0</div>
+                    <div class="stat-label">Sessions</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="week-tabs">
+            <div class="week-tab active" onclick="showWeek(1)">Week 1</div>
+            <div class="week-tab" onclick="showWeek(2)">Week 2</div>
+            <div class="week-tab" onclick="showWeek(3)">Week 3</n            <div class="week-tab" onclick="showWeek(4)">Week 4</div>
+        </div>
+
+        <!-- Week 1 -->
+        <div class="week-section active" id="week1">
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">💪</div>
+                    Daily Exercises
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-name">
+                        Reverse Kegels (Push Down)
+                        <span class="frequency-badge">3× Daily</span>
+                    </div>
+                    <ul class="exercise-steps">
+                        <li>Sit or lie down comfortably</li>
+                        <li>Deep breath in through nose</li>
+                        <li>On exhale, gently push down/out (like starting to pee/poop)</li>
+                        <li>Only 20-30% effort—stay gentle</li>
+                        <li>Hold 5-10 seconds, then fully relax</li>
+                        <li>10-15 reps = 1 set</li>
+                    </ul>
+                    <div class="important-note">
+                        <strong>Key:</strong> Feel your asshole and perineum gently "open." Don't squeeze upward—that's the opposite. Abs can tighten slightly, but keep the push low in the pelvic floor.
+                    </div>
+                </div>
+
+                <div class="exercise-card kegel">
+                    <div class="exercise-name">
+                        Normal Kegels (Squeeze Up)
+                        <span class="frequency-badge">1× Daily</span>
+                    </div>
+                    <ul class="exercise-steps">
+                        <li>Squeeze upward like stopping pee mid-stream</li>
+                        <li>Hold tight for 5 seconds</li>
+                        <li>Relax completely for 10 seconds</li>
+                        <li>10 reps = 1 set</li>
+                    </ul>
+                    <div class="important-note">
+                        <strong>Warning:</strong> Max 1-2 sets per day. Too many makes you go soft faster.
+                    </div>
+                </div>
+
+                <div class="exercise-card breath">
+                    <div class="exercise-name">
+                        Belly Breathing + Hand Press
+                        <span class="frequency-badge">1× Daily (5 min)</span>
+                    </div>
+                    <ul class="exercise-steps">
+                        <li>Lie on back, hand on lower belly (above pubic bone)</li>
+                        <li>Breathe in through nose → belly rises</li>
+                        <li>Breathe out through mouth → belly falls</li>
+                        <li>On exhale, gently press hand toward spine</li>
+                        <li>Light pressure only (like pushing a soft pillow)</li>
+                        <li>20-30 breaths total</li>
+                    </ul>
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w1d1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Reverse Kegels - Morning Set</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1d2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Reverse Kegels - Afternoon Set</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1d3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Reverse Kegels - Evening Set</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1d4')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Normal Kegels</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1d5')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Belly Breathing (5 min)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">🔥</div>
+                    Edging & Sex Practice
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Edging Protocol (3× this week)</div>
+                    <div class="technique-desc">
+                        Get to 7-8/10 arousal. Stop all movement. Reverse Kegel + deep belly breath + light hand press on lower belly. Hold the edge 20-40 seconds. Repeat 4-6 times. You can cum at the end of some sessions—not every time.
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Sex Practice (3× this week)</div>
+                    <div class="technique-desc">
+                        Focus on breathing + reverse Kegel when close. Don't cum every time—practice stopping.
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w1e1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1e2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1e3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 3</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1s1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1s2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w1s3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="week-section" id="week2">
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">💪</div>
+                    Daily Exercises (Same as Week 1)
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-name">
+                        Reverse Kegels
+                        <span class="frequency-badge">3× Daily</span>
+                    </div>
+                    <ul class="exercise-steps">
+                        <li>10-15 reps per set, 3 sets daily</li>
+                        <li>Morning, afternoon, evening</li>
+                    </ul>
+                </div>
+
+                <div class="exercise-card kegel">
+                    <div class="exercise-name">
+                        Normal Kegels
+                        <span class="frequency-badge">1× Daily</span>
+                    </div>
+                    <ul class="exercise-steps">
+                        <li>10 reps, 5-second holds</li>
+                    </ul>
+                </div>
+
+                <div class="exercise-card breath">
+                    <div class="exercise-name">
+                        Belly Breathing
+                        <span class="frequency-badge">1× Daily (5 min)</span>
+                    </div>
+                    <ul class="exercise-steps">
+                        <li>20-30 breaths with hand press</li>
+                    </ul>
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w2d1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Reverse Kegels - All 3 Sets</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2d2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Normal Kegels</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2d3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Belly Breathing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">🔥</div>
+                    Edging & Sex Practice
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Edging Protocol (4× this week)</div>
+                    <div class="technique-desc">
+                        <strong>Goal:</strong> Hold the edge longer—30-40 seconds each time. Same technique: stop at 7-8/10, reverse Kegel + breath + belly press.
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Sex Practice (3-4× this week)</div>
+                    <div class="technique-desc">
+                        <strong>Cowgirl Fix:</strong> Put small pillow under your hips. When she wants faster/harder: breathe deep + reverse Kegel every few thrusts. If you start going soft or popping out: stop 5-10 seconds, reverse Kegel + breath + belly press, re-enter slow and stay deep. Ask her to bear down/push out gently with you.
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w2e1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2e2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2e3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 3</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2e4')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 4</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2s1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2s2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2s3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 3</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w2s4')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 4 (Optional)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="week-section" id="week3">
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">💪</div>
+                    Daily Exercises (Same Protocol)
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w3d1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Reverse Kegels - All 3 Sets</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3d2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Normal Kegels</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3d3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Belly Breathing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">🔥</div>
+                    Edging & Sex Practice
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Edging Protocol (4-5× this week)</div>
+                    <div class="technique-desc">
+                        Allow yourself to cum <strong>once per week</strong> at the end. Use your thorax breathing trick when you finally release. Practice the stop-start technique throughout.
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Sex Practice (4× this week)</div>
+                    <div class="technique-desc">
+                        When she says faster/harder: <strong>breathe + reverse Kegel + stay deep and grind</strong> instead of fast in-out. The pillow under hips is your friend. Master the pop-out fix.
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w3e1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3e2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3e3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 3</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3e4')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 4</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3e5')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 5 (Optional)</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3s1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3s2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3s3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 3</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w3s4')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="week-section" id="week4">
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">💪</div>
+                    Daily Exercises (Final Week)
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w4d1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Reverse Kegels - All 3 Sets</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4d2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Normal Kegels</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4d3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Belly Breathing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-icon">🎯</div>
+                    Final Week Goals
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Edging Protocol (5× this week)</div>
+                    <div class="technique-desc">
+                        Cum 1-2 times per week. Focus on control, not denial. You should be able to hold the edge 40+ seconds consistently.
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <div class="technique-title">Sex Practice (4-5× this week)</div>
+                    <div class="technique-desc">
+                        <strong>Goal:</strong> She cums 4-5 times before you finish. Track how long you stay hard. Use all techniques: reverse Kegel, belly breathing, pillow under hips, deep grinding, pop-out fix.
+                    </div>
+                </div>
+
+                <div class="technique-card" style="border: 1px solid var(--success);">
+                    <div class="technique-title" style="color: var(--success);">Success Metrics</div>
+                    <div class="technique-desc">
+                        Can you stay hard when she rides hard? Can you delay orgasm without going soft? Can you re-enter smoothly if you pop out? If yes to all—you've nailed it.
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <div class="check-item" onclick="toggleCheck(this, 'w4e1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4e2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4e3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 3</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4e4')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 4</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4e5')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Edging Session 5</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4s1')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 1</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4s2')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 2</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4s3')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 3</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4s4')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 4</span>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this, 'w4s5')">
+                        <div class="checkbox"></div>
+                        <span class="check-text">Sex Session 5 (Optional)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetProgress()">Reset All Progress</button>
+    </div>
+
+    <script>
+        // Load saved progress
+        function loadProgress() {
+            const saved = localStorage.getItem('harderProtocolProgress');
+            if (saved) {
+                const items = JSON.parse(saved);
+                items.forEach(id => {
+                    const el = document.querySelector(`[onclick*="'${id}'"]`);
+                    if (el) el.classList.add('completed');
+                });
+            }
+            updateStats();
+        }
+
+        // Save progress
+        function saveProgress() {
+            const completed = Array.from(document.querySelectorAll('.check-item.completed'))
+                .map(el => el.getAttribute('onclick').match(/'([^']+)'/)[1]);
+            localStorage.setItem('harderProtocolProgress', JSON.stringify(completed));
+            updateStats();
+        }
+
+        // Toggle check
+        function toggleCheck(el, id) {
+            el.classList.toggle('completed');
+            saveProgress();
+        }
+
+        // Update stats
+        function updateStats() {
+            const completed = document.querySelectorAll('.check-item.completed').length;
+            const total = document.querySelectorAll('.check-item').length;
+            const percentage = Math.round((completed / total) * 100);
+
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('exercisesDone').textContent = completed;
+
+            // Calculate days (rough estimate: 5 items per day)
+            const days = Math.floor(completed / 5);
+            document.getElementById('daysCompleted').textContent = days;
+
+            // Calculate sessions (sex + edging)
+            const sessions = document.querySelectorAll('.check-item.completed[onclick*="s"], .check-item.completed[onclick*="e"]').length;
+            document.getElementById('sessionsLogged').textContent = sessions;
+
+            // Determine current week
+            let week = 1;
+            if (completed > 20) week = 2;
+            if (completed > 45) week = 3;
+            if (completed > 70) week = 4;
+            document.getElementById('currentWeekDisplay').textContent = 'Week ' + week;
+        }
+
+        // Show week
+        function showWeek(n) {
+            document.querySelectorAll('.week-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.week-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('week' + n).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Reset
+        function resetProgress() {
+            if (confirm('Reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('harderProtocolProgress');
+                document.querySelectorAll('.check-item').forEach(el => el.classList.remove('completed'));
+                updateStats();
+            }
+        }
+
+        // Init
+        loadProgress();
+    </script>
+</body>
+</html>
